@@ -11,7 +11,10 @@ applicants %>%
     n_all = n_all / 1e06
   ) %>%
   ggplot(mapping = aes(x = year, y = n_all, fill = sex)) +
-  geom_ribbon() +
+ # geom_line(aes(color = sex)) # to see what these lines look like
+   geom_ribbon(aes(ymin = 0, ymax = n_all), alpha = 0.7) + 
+  #geom_ribbon(aes(ymin = n_all-0.1, ymax = n_all+0.1)) + 
+  #added y min & y max. #question is how to show  
   scale_fill_brewer(type = "qual") +
   labs(
     title = "Total US births",
@@ -23,6 +26,7 @@ applicants %>%
   theme_minimal()
 
 # write function to show trends over time for specific name
+### original code
 name_trend <- function(person_name) {
   babynames %>%
     filter(name == person_name) %>%
@@ -31,6 +35,24 @@ name_trend <- function(person_name) {
     scale_color_brewer(type = "qual") +
     labs(
       title = glue(Name: {person_name}),
+      x = "Year",
+      y = "Number of births",
+      color = NULL
+    ) +
+    theme_minimal()
+}
+#### end original code
+
+name_trend <- function(person_name) {
+  babynames %>%
+    #mutate(person_name = name) %>%
+    #group_by(person_name) %>%
+    filter(name == person_name) %>% #what is this filter doing here?
+    ggplot(mapping = aes(x = year, y = n, color = sex)) +
+    geom_line() +
+    scale_color_brewer(type = "qual") +
+    labs(
+      title = glue('Name: {person_name}'), ## added '' to the glue input. 
       x = "Year",
       y = "Number of births",
       color = NULL
