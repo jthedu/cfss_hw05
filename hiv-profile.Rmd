@@ -2,14 +2,14 @@
 title: "Country Profile"
 author: "Julia Du"
 output:
-  html_document:
+  github_document:
     toc: true
 params: 
   my_iso3: KEN
 ---
 
 ```{r setup, include=FALSE, echo = TRUE}
-knitr::opts_chunk$set( # this is supposed to be "set" & not "get", right?
+knitr::opts_chunk$set( 
   echo = FALSE
   )
 library(tidyverse)
