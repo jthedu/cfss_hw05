@@ -1,15 +1,14 @@
 ---
 title: "Country Profile"
 author: "Julia Du"
-output
-github_document:
+output:
+  html_document:
     toc: true
 params: 
-  my_iso3: "KEN"
+  my_iso3: KEN
 ---
 
-```{r setup, include=FALSE}
-library(knitr)
+```{r setup, include=FALSE, echo = TRUE}
 knitr::opts_chunk$set( # this is supposed to be "set" & not "get", right?
   echo = FALSE
   )
@@ -31,16 +30,16 @@ The file `hiv_rates.csv` contains a tidy dataset with six columns:
     6. The name of the country that reported data.
 
 
-```{r import data}
+```{r import data, message = TRUE}
 hiv <- read_csv("./data/hiv_rates.csv") %>%
   janitor::clean_names() %>%
   mutate(country_name = countrycode(iso3, "iso3c", "country.name"))
 ```
 
 ```{r customize, include = FALSE}
-my_iso3 <- "KEN" # can I make this a parameter?
+#my_iso3 <- "KEN" # can I make this a parameter?
 single_iso <- hiv %>%
-  filter(iso3 == my_iso3)
+  filter(iso3 == params$my_iso3)
 my_country <- single_iso %>%
   distinct(country_name) %>%
   pull(country_name)
@@ -96,7 +95,7 @@ single_iso %>%
 
 How does `r my_country` compare in `r most_recent`?
 
-```{r plot, fig.height = 14}
+```{r bigplot, fig.height = 14}
 plot_title <- glue::glue("Year: {most_recent}")
 hiv %>%
   filter(year == most_recent) %>%
