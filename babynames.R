@@ -3,6 +3,7 @@
 library(tidyverse)
 library(babynames)
 library(glue)
+library(RColorBrewer)
 
 # plot total US births using a stacked area chart
 applicants %>%
@@ -12,9 +13,8 @@ applicants %>%
   ) %>%
   ggplot(mapping = aes(x = year, y = n_all, fill = sex)) +
  # geom_line(aes(color = sex)) # to see what these lines look like
-   geom_ribbon(aes(ymin = 0, ymax = n_all), alpha = 0.7) + 
-  #geom_ribbon(aes(ymin = n_all-0.1, ymax = n_all+0.1)) + 
-  #added y min & y max. #question is how to show  
+  #geom_area() gives a VERY diff graph - ASK TA!!! think ribbon is right
+   geom_ribbon(aes(ymin = 0, ymax = n_all), alpha = 0.7) + #added y min & y max 
   scale_fill_brewer(type = "qual") +
   labs(
     title = "Total US births",
@@ -47,7 +47,7 @@ name_trend <- function(person_name) {
   babynames %>%
     #mutate(person_name = name) %>%
     #group_by(person_name) %>%
-    filter(name == person_name) %>% #what is this filter doing here?
+    filter(name == person_name) %>%            #what is this filter doing here?
     ggplot(mapping = aes(x = year, y = n, color = sex)) +
     geom_line() +
     scale_color_brewer(type = "qual") +
@@ -66,10 +66,11 @@ name_trend("Benjamin")
 top_n_trend <- function(n_year, n_rank = 5) {
   # create lookup table
   top_names <- babynames %>%
-    group_by(name, sex) %>%
-    summarize(count = as.numeric(sum(count))) %>%
+    group_by(name, sex) %>% 
+    ### ask TA abt grouping - def get diff answer w/ this, probs cuz grouping by 2 columns
+    add_count(name, wt = n, name = "count") %>%
     filter(count > 1000) %>%
-    select(name, sex)
+    distinct(name, sex)
   
   # filter babynames for top_names
   filtered_names <- babynames %>%
@@ -78,21 +79,29 @@ top_n_trend <- function(n_year, n_rank = 5) {
   # get the top N names from n_year
   top_names <- filtered_names %>%
     filter(year == n_year) %>%
-    group_by(name, sex) %>%
-    summarize(count = sum(count)) %>%
+    #filter(year == "1900") %>% ### using this as an ex
+    group_by(name, sex) %>% #you need this line, do NOT delete
+    add_count(name, wt = n, name = "count") %>%
     group_by(sex) %>%
     mutate(rank = min_rank(desc(count))) %>%
-    filter(rank <= n_rank) %>%
+    filter(rank <= n_rank) %>%    
+#    filter(rank <= 5) %>%
     arrange(sex, rank) %>%
     select(name, sex, rank)
+  
+  #defined desired # of colors
+  nb.cols <- n_rank*2
+  mycolors <- colorRampPalette(brewer.pal(12, "Set3"))(nb.cols)
   
   # keep just the top N names over time and plot
   filtered_names %>%
     inner_join(select(top_names, sex, name)) %>%
-    ggplot(mapping = aes(x = year, y = count, color = name)) +
+#    inner_join(select(top_names1, sex, name)) %>% 
+    #either using wrong join, or y in ggplot should be n - i changed to y = n for now
+    ggplot(mapping = aes(x = year, y = n, color = name)) +
     facet_wrap(~sex, ncol = 1) +
     geom_line() +
-    scale_color_brewer(type = "qual", palette = "Set3") +
+    scale_color_manual(values = mycolors) +
     labs(
       title = glue("Most Popular Names of {n_year}"),
       x = "Year",
