@@ -14,6 +14,7 @@ You should have the following packages installed:
 library(tidyverse)
 library(gapminder)
 library(rcfss)
+library(RColorBrewer)
 
 library(ggthemes)
 library(ggridges)

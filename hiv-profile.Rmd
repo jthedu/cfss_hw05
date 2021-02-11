@@ -4,6 +4,8 @@ author: "Julia Du"
 output
 github_document:
     toc: true
+params: 
+  my_iso3: "KEN"
 ---
 
 ```{r setup, include=FALSE}
@@ -20,14 +22,14 @@ theme_set(theme_minimal())
 # Data
 
 The file `hiv_rates.csv` contains a tidy dataset with six columns:
-  1. Total population growth (annual %) = SP.POP.GROW
-1. The ISO3 code of the country that reported data.
-1. The year for which data was reported.
-1. The percentage of HIV-positive individuals age 15-49.
-1. The percentage of HIV-positive females age 15-24.
-1. The percentage of HIV-positive males age 15-24.
 
-formatting???
+    1. The ISO3 code of the country that reported data.
+    2. The year for which data was reported.
+    3. The percentage of HIV-positive individuals age 15-49.
+    4. The percentage of HIV-positive females age 15-24.
+    5. The percentage of HIV-positive males age 15-24.
+    6. The name of the country that reported data.
+
 
 ```{r import data}
 hiv <- read_csv("./data/hiv_rates.csv") %>%
