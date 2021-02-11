@@ -26,23 +26,6 @@ applicants %>%
   theme_minimal()
 
 # write function to show trends over time for specific name
-### original code
-name_trend <- function(person_name) {
-  babynames %>%
-    filter(name == person_name) %>%
-    ggplot(mapping = aes(x = year, y = n, color = sex)) +
-    geom_line() +
-    scale_color_brewer(type = "qual") +
-    labs(
-      title = glue(Name: {person_name}),
-      x = "Year",
-      y = "Number of births",
-      color = NULL
-    ) +
-    theme_minimal()
-}
-#### end original code
-
 name_trend <- function(person_name) {
   babynames %>%
     #mutate(person_name = name) %>%
@@ -117,7 +100,7 @@ top_n_trend(n_year = 1986, n_rank = 10)
 
 # compare naming trends to disney princess film releases
 disney <- tribble(
-  "princess",  "film", "release_year",
+  ~"princess",  ~"film", ~"release_year",
   "Snow White", "Snow White and the Seven Dwarfs", 1937,
   "Cinderella", "Cinderella", 1950,
   "Aurora", "Sleeping Beauty", 1959,
@@ -134,18 +117,20 @@ disney <- tribble(
 )
 
 ## join together the data frames
-babynames %>%
+babynames %>%         #make sure to delete test
   # ignore men named after princesses - is this fair?
-  filter(sex == F) %>%
+  ### DO I NEED TO DELETE THE COMMENT ABOVE?
+  filter(sex == "F") %>%
   inner_join(disney, by = c("name" = "princess")) %>%
   mutate(name = fct_reorder(.f = name, .x = release_year)) %>%
   # plot the trends over time, indicating release year
   ggplot(mapping = aes(x = year, y = n)) +
-  facet_wrap(~ name + film, scales = "free_y", labeller = label_both()) +
+  facet_wrap(~ name + film, scales = "free_y", labeller = label_both) + 
+  ### successfully got the labels - should they be special in any way? ask TA what i'm aiming for
   geom_line() +
   geom_vline(mapping = aes(xintercept = release_year), linetype = 2, alpha = .5) +
   scale_x_continuous(breaks = c(1880, 1940, 2000)) +
-  theme_minimal() +
   labs(title = "Popularity of Disney princess names",
        x = "Year",
-       y = "Number of births")
+       y = "Number of births") +
+    theme_minimal() 
