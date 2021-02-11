@@ -7,7 +7,10 @@ github_document:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$get(echo = FALSE)
+library(knitr)
+knitr::opts_chunk$set( # this is supposed to be "set" & not "get", right?
+  echo = FALSE
+  )
 library(tidyverse)
 # install.packages("countrycode")
 library(countrycode)
@@ -17,15 +20,17 @@ theme_set(theme_minimal())
 # Data
 
 The file `hiv_rates.csv` contains a tidy dataset with six columns:
-
+  1. Total population growth (annual %) = SP.POP.GROW
 1. The ISO3 code of the country that reported data.
 1. The year for which data was reported.
 1. The percentage of HIV-positive individuals age 15-49.
 1. The percentage of HIV-positive females age 15-24.
 1. The percentage of HIV-positive males age 15-24.
 
+formatting???
+
 ```{r import data}
-hiv <- read_csv("hiv_rates.csv") %>%
+hiv <- read_csv("./data/hiv_rates.csv") %>%
   janitor::clean_names() %>%
   mutate(country_name = countrycode(iso3, "iso3c", "country.name"))
 ```
@@ -46,7 +51,7 @@ most_recent <- single_iso %>%
 
 For which years do we have data for `r my_country`?
 
-```{years}
+```{r years}
 single_iso %>%
   distinct(year)
 ```
@@ -56,10 +61,10 @@ How has HIV incidence changed over time in `r my_country`?
 ```{r plot}
 plot_title <- glue::glue("Country: {my_country}")
 single_iso %>%
-  ggplot(aes(x = year, y = hiv_pct_15_to_49)) %>%
-  geom_point() %>%
-  geom_line() %>%
-  scale_y_continuous(labels = scales::percent) %>%
+  ggplot(aes(x = year, y = hiv_pct_15_to_49)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(labels = scales::percent) +
   labs(
     title = plot_title,
     subtitle = "HIV prevalence, age 15-49",
