@@ -1,11 +1,14 @@
-render_report = function(iso3) {
+render_report = function(my_iso3) {
   rmarkdown::render(
     "hiv-profile.Rmd", params = list(
-      iso3 = iso3
+      my_iso3 = my_iso3
     ),
-    output_file = paste0("Report-", iso3, ".html")
+    output_file = paste0("Report-", my_iso3, ".html")
   )
 }
+
+masterdata <- list.files(path = "./data/", pattern = "\\.csv$") %>% #could also write "*.csv"
+  map(render_report)
 
 #ask about rendering all these docs to a single folder
 
