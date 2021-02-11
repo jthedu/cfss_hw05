@@ -12,9 +12,7 @@ applicants %>%
     n_all = n_all / 1e06
   ) %>%
   ggplot(mapping = aes(x = year, y = n_all, fill = sex)) +
- # geom_line(aes(color = sex)) # to see what these lines look like
-  #geom_area() gives a VERY diff graph - ASK TA!!! think ribbon is right
-   geom_ribbon(aes(ymin = 0, ymax = n_all), alpha = 0.7) + #added y min & y max 
+  geom_area() +
   scale_fill_brewer(type = "qual") +
   labs(
     title = "Total US births",
