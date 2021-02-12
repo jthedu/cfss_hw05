@@ -1,0 +1,113 @@
+---
+title: "Country Profile"
+author: "Julia Du"
+output:
+  html_document:
+    toc: true
+params: 
+  my_iso3: KEN
+---
+
+```{r setup, include=FALSE, echo = TRUE}
+knitr::opts_chunk$set( 
+  echo = FALSE
+  )
+library(tidyverse)
+# install.packages("countrycode")
+library(countrycode)
+theme_set(theme_minimal())
+```
+
+# Data
+
+The file `hiv_rates.csv` contains a tidy dataset with six columns:
+
+    1. The ISO3 code of the country that reported data.
+    2. The year for which data was reported.
+    3. The percentage of HIV-positive individuals age 15-49.
+    4. The percentage of HIV-positive females age 15-24.
+    5. The percentage of HIV-positive males age 15-24.
+    6. The name of the country that reported data.
+
+
+```{r import data, message = FALSE}
+hiv <- read_csv("./data/hiv_rates.csv") %>%
+  janitor::clean_names() %>%
+  mutate(country_name = countrycode(iso3, "iso3c", "country.name"))
+```
+
+```{r customize, include = FALSE}
+#my_iso3 <- "KEN" # can I make this a parameter?
+single_iso <- hiv %>%
+  filter(iso3 == params$my_iso3)
+my_country <- single_iso %>%
+  distinct(country_name) %>%
+  pull(country_name)
+most_recent <- single_iso %>%
+  summarize(max_year = max(year)) %>%
+  pull()
+```
+
+# Country Report: `r my_country`
+
+For which years do we have data for `r my_country`?
+
+```{r years}
+single_iso %>%
+  distinct(year)
+```
+
+How has HIV incidence changed over time in `r my_country`?
+
+```{r plot}
+plot_title <- glue::glue("Country: {my_country}")
+single_iso %>%
+  ggplot(aes(x = year, y = hiv_pct_15_to_49)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = plot_title,
+    subtitle = "HIV prevalence, age 15-49",
+    x = "Year",
+    y = NULL
+  )
+
+single_iso %>%
+  ggplot(aes(x = year)) +
+  geom_point(aes(
+    y = hiv_pct_15_to_24_female,
+    color = "Female"
+  )) +
+  geom_point(aes(
+    y = hiv_pct_15_to_24_male,
+    color = "Male"
+  )) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = plot_title,
+    subtitle = "HIV prevalence, age 15-24",
+    x = "Year",
+    y = NULL,
+    color = NULL
+  )
+```
+
+How does `r my_country` compare in `r most_recent`?
+
+```{r bigplot, fig.height = 14}
+plot_title <- glue::glue("Year: {most_recent}")
+hiv %>%
+  filter(year == most_recent) %>%
+  ggplot(aes(x = fct_reorder(country_name, hiv_pct_15_to_49), y = hiv_pct_15_to_49)) +
+  geom_col() +
+  geom_col(data = single_iso %>% filter(year == most_recent), fill = "dodgerblue") +
+  labs() +
+  scale_y_continuous(labels = scales::percent) +
+  coord_flip() +
+  labs(
+    title = plot_title,
+    x = NULL,
+    y = "HIV prevalence, age 15-49"
+  )
+```

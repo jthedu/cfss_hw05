@@ -13,7 +13,7 @@ applicants %>%
   ) %>%
   ggplot(mapping = aes(x = year, y = n_all, fill = sex)) +
   geom_area() +     
-  #debug: changed from geom_ribbon() to geom_area()
+  # debug: changed from geom_ribbon() to geom_area()
   scale_fill_brewer(type = "qual") +
   labs(
     title = "Total US births",

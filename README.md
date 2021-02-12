@@ -11,14 +11,12 @@ Detailed instructions for this homework assignment are [here](https://cfss.uchic
 You should have the following packages installed:
 
 ```r
-library(tidyverse)
-library(gapminder)
-library(rcfss)
-library(RColorBrewer)
 
-library(ggthemes)
-library(ggridges)
-library(viridis)
+library(tidyverse)
+library(babynames)
+library(glue)
+library(RColorBrewer)
+library(countrycode)
 library(forcats)
 library(readr)
 library(knitr)
