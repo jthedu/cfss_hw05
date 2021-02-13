@@ -15,3 +15,4 @@ masterdata <- read_csv("./data/hiv_rates.csv") %>%
   distinct(iso3) %>%
   pull(iso3) %>%
   map(render_report)
+
