@@ -37,7 +37,6 @@ hiv <- read_csv("./data/hiv_rates.csv") %>%
 ```
 
 ```{r customize, include = FALSE}
-#my_iso3 <- "KEN" # can I make this a parameter?
 single_iso <- hiv %>%
   filter(iso3 == params$my_iso3)
 my_country <- single_iso %>%
