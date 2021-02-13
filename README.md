@@ -21,7 +21,6 @@ You should have the following packages installed:
 ```r
 
 library(tidyverse)
-library(babynames)
 library(glue)
 library(RColorBrewer)
 library(countrycode)
