@@ -12,8 +12,7 @@ This was accomplished through creating an identical .Rmd file, with only the out
 
 ## Executing the files
 
-The [baby names script](babynames.R) is fixed
-**ASK ABOUT GENERATING OUTPUT FOR BABYNAMES SCRIPT**
+The [baby names script](babynames.R) is fixed.
 
 The [hiv-profile.Rmd](hiv-profile.Rmd) is a parameterized R Markdown file that lets me generate a **markdown** report for any country in the HIV dataset. Given my parameter value is just Kenya in the .Rmd, this means simply knitting the .Rmd alone will produce [Kenya's markdown report](hiv-profile.md).
 
@@ -21,7 +20,7 @@ I then wrote a [R script](hiv-profile.R) to iterate this .Rmd, so that when I ru
 
 To solely produce html files with my R script, I created a copy of my parameterized .Rmd file and simply changed the YAML output to **html_document**. I used this [template .Rmd file](hiv-profile-template.Rmd) in my R script, thus successfully generating [html reports of all countries](./reports). 
 
-**ASK** These html reports cannot be viewed in Github alone since [they exceed 1 MB](https://stackoverflow.com/questions/48054238/error-github-can-t-show-files-that-are-this-big-right-now-but-the-file-is-onl).
+Note: These html reports cannot be viewed in Github alone since [they exceed 1 MB](https://stackoverflow.com/questions/48054238/error-github-can-t-show-files-that-are-this-big-right-now-but-the-file-is-onl).
 
 ## Required packages
 
