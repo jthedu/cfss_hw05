@@ -25,8 +25,5 @@ library(babynames)
 library(glue)
 library(RColorBrewer)
 library(countrycode)
-library(forcats)
-library(readr)
-library(knitr)
 
 ```
