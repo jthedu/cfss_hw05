@@ -2,14 +2,6 @@
 
 Detailed instructions for this homework assignment are [here](https://cfss.uchicago.edu/homework/debugging-rmarkdown/).
 
-## Links to files
-Here is my [baby names script](babynames.R).
-
-Here also is my [HIV profile source code](hiv-profile.Rmd) & my [rendered markdown report for a single country](hiv-profile.md).
-
-Finally, here is my individual country HIV profile [R script](hiv-profile.R) & my [rendered HTML files](./reports). 
-This was accomplished through creating an identical .Rmd file, with only the output section changed to "html_document".
-
 ## Executing the files
 
 The [baby names script](babynames.R) is fixed.
