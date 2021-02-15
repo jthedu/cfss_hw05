@@ -97,7 +97,7 @@ top_n_trend(n_year = 1986, n_rank = 50)
 
 # compare naming trends to disney princess film releases
 disney <- tribble(
-  ~"princess",  ~"film", ~"release_year",
+  ~princess,  ~film, ~release_year, # debug: replaced "" w/ ~
   "Snow White", "Snow White and the Seven Dwarfs", 1937,
   "Cinderella", "Cinderella", 1950,
   "Aurora", "Sleeping Beauty", 1959,
